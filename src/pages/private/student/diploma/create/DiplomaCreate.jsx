@@ -5,6 +5,7 @@ export const DiplomaCreate = () => {
     return (
         <>
             <PageTitle title="Create Diploma" mb={0}/>
+            <PageTitle title="Create Diploma" mb={0}/>
         </>
     )
 }
