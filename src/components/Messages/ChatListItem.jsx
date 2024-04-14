@@ -1,0 +1,70 @@
+import {toggleMessagesPane} from "../../utils/MessagePaneUtil";
+import ListItem from "@mui/joy/ListItem";
+import ListItemButton from "@mui/joy/ListItemButton";
+import {Box, ListDivider} from "@mui/joy";
+import Typography from "@mui/joy/Typography";
+import Stack from "@mui/joy/Stack";
+import {AvatarWithStatus} from "./AvatarWithStatus";
+import {CircleRounded} from "@mui/icons-material";
+
+export const ChatListItem = (props) => {
+    const { id, sender, messages, selectedChatId, setSelectedChat } = props;
+    const selected = selectedChatId === id;
+    return (
+        <>
+            <ListItem>
+                <ListItemButton
+                    onClick={() => {
+                        toggleMessagesPane();
+                        setSelectedChat({ id, sender, messages });
+                    }}
+                    selected={selected}
+                    color="neutral"
+                    sx={{
+                        flexDirection: 'column',
+                        alignItems: 'initial',
+                        gap: 1,
+                    }}
+                >
+                    <Stack direction="row" spacing={1.5}>
+                        <AvatarWithStatus online={sender.online} src={sender.avatar} />
+                        <Box sx={{ flex: 1 }}>
+                            <Typography level="title-sm">{sender.name}</Typography>
+                            <Typography level="body-sm">{sender.username}</Typography>
+                        </Box>
+                        <Box
+                            sx={{
+                                lineHeight: 1.5,
+                                textAlign: 'right',
+                            }}
+                        >
+                            {messages[0].unread && (
+                                <CircleRounded sx={{ fontSize: 12 }} color="primary" />
+                            )}
+                            <Typography
+                                level="body-xs"
+                                display={{ xs: 'none', md: 'block' }}
+                                noWrap
+                            >
+                                5 mins ago
+                            </Typography>
+                        </Box>
+                    </Stack>
+                    <Typography
+                        level="body-sm"
+                        sx={{
+                            display: '-webkit-box',
+                            WebkitLineClamp: '2',
+                            WebkitBoxOrient: 'vertical',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                        }}
+                    >
+                        {messages[0].content}
+                    </Typography>
+                </ListItemButton>
+            </ListItem>
+            <ListDivider sx={{ margin: 0 }} />
+        </>
+    );
+}
