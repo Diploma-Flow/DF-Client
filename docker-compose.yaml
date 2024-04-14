@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  frontend-react:
+    stdin_open: true
+    tty: true
+    build: .
+    image: client:v1
+    container_name: client
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./front-end/src:/app/src
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
