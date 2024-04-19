@@ -1,4 +1,4 @@
-import {Navigate, Route, Routes, useLocation} from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 import Home from "./pages/private/student/home/Home";
 import {Box} from "@mui/joy";
 import BreadCrumbs from "./components/BreadCrumbs/BreadCrumbs";
@@ -24,15 +24,15 @@ import {useMessagePageStatus} from "./services/IsMessagePageOpen";
 
 function App() {
     // TODO: Proper authentication
-    const [auth, setAuth] = useState(true);
-    const { isMessagePageOpen } = useMessagePageStatus();
+    const [auth, setAuth] = useState(false);
+    const {isMessagePageOpen} = useMessagePageStatus();
 
     return (
         <>
             {
                 !auth ? (
                     <Routes>
-                        <Route path="/" element={<Navigate to="/login" />} />
+                        <Route path="/" element={<Navigate to="/login"/>}/>
                         <Route path="/login" element={<Login/>}/>
                         <Route path="/register" element={<Register/>}/>
                         <Route path="/forgot-password" element={<ForgotPassword/>}/>
@@ -45,33 +45,33 @@ function App() {
                         <MainContainer showPadding={!isMessagePageOpen}>
                             <BreadCrumbs excluded="messages"/>
                             <PageContainer showPadding={!isMessagePageOpen}>
-                                    <Routes>
-                                        {/*TODO to figure out what to include in the Home page*/}
-                                        <Route path="/" element={<Home/>}/>
-                                        <Route path="my-profile" element={<MyProfile/>}/>
+                                <Routes>
+                                    {/*TODO to figure out what to include in the Home page*/}
+                                    <Route path="/" element={<Home/>}/>
+                                    <Route path="my-profile" element={<MyProfile/>}/>
 
-                                        <Route path="application" element={<ApplicationList />}/>
-                                        <Route path="application/create" element={<ApplicationCreate />} />
-                                        <Route path="application/details/:applicationId" element={<ApplicationDetails />} />
+                                    <Route path="application" element={<ApplicationList/>}/>
+                                    <Route path="application/create" element={<ApplicationCreate/>}/>
+                                    <Route path="application/details/:applicationId" element={<ApplicationDetails/>}/>
 
-                                        <Route path="diploma" element={<DiplomaList />}/>
-                                        <Route path="diploma/create" element={<DiplomaCreate />} />
-                                        <Route path="diploma/details/:diplomaId" element={<DiplomaDetails />} />
-                                        <Route path="messages" element={<Messages />} />
-                                        {/*TODO those paths*/}
-                                        {/*Path for: progress tracker*/}
-                                        {/*Path for: CRUD diploma application*/}
-                                        {/*Path for: CRUD diploma*/}
-                                        {/*Path for: view review report*/}
-                                        {/*Path for: apply for defending the diploma*/}
-                                        {/*Path for: messages with professors*/}
-                                        {/*Path for: settings*/}
-                                        {/*Path for: CRUD on my profile*/}
+                                    <Route path="diploma" element={<DiplomaList/>}/>
+                                    <Route path="diploma/create" element={<DiplomaCreate/>}/>
+                                    <Route path="diploma/details/:diplomaId" element={<DiplomaDetails/>}/>
+                                    <Route path="messages" element={<Messages/>}/>
+                                    {/*TODO those paths*/}
+                                    {/*Path for: progress tracker*/}
+                                    {/*Path for: CRUD diploma application*/}
+                                    {/*Path for: CRUD diploma*/}
+                                    {/*Path for: view review report*/}
+                                    {/*Path for: apply for defending the diploma*/}
+                                    {/*Path for: messages with professors*/}
+                                    {/*Path for: settings*/}
+                                    {/*Path for: CRUD on my profile*/}
 
 
-                                        {/*Bottom if not any of the above match*/}
-                                        <Route path="*" element={<NotFound/>}/>
-                                    </Routes>
+                                    {/*Bottom if not any of the above match*/}
+                                    <Route path="*" element={<NotFound/>}/>
+                                </Routes>
                             </PageContainer>
                         </MainContainer>
                     </Box>
