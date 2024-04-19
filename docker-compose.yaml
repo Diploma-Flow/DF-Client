@@ -9,7 +9,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./front-end/src:/app/src
+      - ./src:/app/src
     environment:
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true
