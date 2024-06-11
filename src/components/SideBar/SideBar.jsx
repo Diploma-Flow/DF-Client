@@ -26,26 +26,28 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import ColorSchemeToggle from "../ToggleThemeMode/ColorSchemeToggle";
 import {EventRounded, SchoolRounded} from "@mui/icons-material";
-import {Link as RouterLink} from "react-router-dom";
+import {Link as RouterLink, useNavigate} from "react-router-dom";
 import {Skeleton} from "@mui/joy";
 import {closeSidebar} from "../../utils/SideBarUtil";
 import {SideBarTab} from "./SideBarTab";
 import {SideBarNestedTab} from "./SideBarNestedTab";
 import {SideBarNestedContent} from "./SideBarNestedContent";
 import AssignmentTurnedInRoundedIcon from '@mui/icons-material/AssignmentTurnedInRounded';
+import {useLogout} from "../../hooks/useLogout";
 
 export default function Sidebar() {
     const [loading, setLoading] = useState(true);
     const [selected, setSelected] = useState('Home');
+    const { logout } = useLogout();
 
     const handleSelect = (title) => {
         setSelected(title);
     }
 
-    const handleLogout = () => {
-        //TODO implement logout
-        alert("Logout");
-    }
+    const handleLogout = async (event) => {
+        event.preventDefault();
+        await logout();
+    };
 
     return (
         <Sheet

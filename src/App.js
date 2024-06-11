@@ -21,16 +21,16 @@ import {DiplomaDetails} from "./pages/private/student/diploma/details/DiplomaDet
 import {Messages} from "./pages/private/shared/Messages";
 import {PageContainer} from "./components/LayoutContainer/PageContainer";
 import {useMessagePageStatus} from "./services/IsMessagePageOpen";
+import {useAuthContext} from "./hooks/useAuthContext";
 
 function App() {
-    // TODO: Proper authentication
-    const [auth, setAuth] = useState(false);
-    const {isMessagePageOpen} = useMessagePageStatus();
+    const { isAuthenticated } = useAuthContext();
+    const { isMessagePageOpen } = useMessagePageStatus();
 
     return (
         <>
             {
-                !auth ? (
+                !isAuthenticated ? (
                     <Routes>
                         <Route path="/" element={<Navigate to="/login"/>}/>
                         <Route path="/login" element={<Login/>}/>
@@ -42,9 +42,9 @@ function App() {
                     <Box sx={{display: 'flex', minHeight: '100dvh'}}>
                         <Header/>
                         <SideBar/>
-                        <MainContainer showPadding={!isMessagePageOpen}>
+                        <MainContainer showPadding={ !isMessagePageOpen }>
                             <BreadCrumbs excluded="messages"/>
-                            <PageContainer showPadding={!isMessagePageOpen}>
+                            <PageContainer showPadding={ !isMessagePageOpen }>
                                 <Routes>
                                     {/*TODO to figure out what to include in the Home page*/}
                                     <Route path="/" element={<Home/>}/>

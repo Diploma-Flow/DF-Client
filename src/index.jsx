@@ -5,15 +5,18 @@ import '@fontsource/inter';
 import {BrowserRouter} from "react-router-dom";
 import {CssBaseline, CssVarsProvider} from "@mui/joy";
 import {SystemSettingProvider} from "./context/SystemSettingContext";
+import {AuthContextProvider} from "./context/AuthContext";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<React.StrictMode>
     <SystemSettingProvider>
         <CssVarsProvider defaultMode="system">
             <CssBaseline/>
-            <BrowserRouter>
-                <App/>
-            </BrowserRouter>
+            <AuthContextProvider>
+                <BrowserRouter>
+                    <App/>
+                </BrowserRouter>
+            </AuthContextProvider>
         </CssVarsProvider>
     </SystemSettingProvider>
 </React.StrictMode>);

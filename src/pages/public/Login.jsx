@@ -17,6 +17,7 @@ import Input from "@mui/joy/Input";
 import {Link as RouterLink} from "react-router-dom";
 import Button from "@mui/joy/Button";
 import GoogleIcon from "../../assets/svg/GoogleIcon";
+import {useLogin} from "../../hooks/useLogin";
 
 function Login() {
 
@@ -26,15 +27,22 @@ function Login() {
         setShowPassword(!showPassword);
     }
 
-    const handleFormSubmit = (event) => {
+    const [loginRequest, setLoginRequest] = useState({
+        email: '',
+        password: ''
+    });
+
+    const {login, error, isLoading} = useLogin();
+
+    const handleFormSubmit = async (event) => {
         event.preventDefault();
-        const formElements = event.currentTarget.elements;
-        const data = {
-            email: formElements.email.value,
-            password: formElements.password.value,
-            persistent: formElements.persistent.checked,
-        };
-        alert(JSON.stringify(data, null, 2));
+
+        console.log(loginRequest);
+        await login(loginRequest);
+    };
+
+    const handleChange = (event) => {
+        setLoginRequest({ ...loginRequest, [event.target.name]: event.target.value });
     };
 
     return (<Sheet
@@ -100,7 +108,8 @@ function Login() {
                                type="email"
                                name="email"
                                placeholder="john@edu.com"
-                               autocomplete="username"
+                               autoComplete="username"
+                               onChange={handleChange}
                                required/>
                         {/*<FormHelperText>Please provide a valid email</FormHelperText>*/}
                     </FormControl>
@@ -113,7 +122,8 @@ function Login() {
                                type={showPassword ? 'text' : 'password'}
                                name="password"
                                placeholder="Example@1234"
-                               autocomplete="current-password"
+                               autoComplete="current-password"
+                               onChange={handleChange}
                                required/>
                     </FormControl>
                     <Sheet sx={{
