@@ -4,11 +4,12 @@ import {useState} from "react";
 import Stack from "@mui/joy/Stack";
 import {Box} from "@mui/joy";
 import {useSystemSetting} from "../../context/SystemSettingContext";
+import {useAuthContext} from "../../hooks/useAuthContext";
 
 export const PageTitle = (props) => {
-    const [profileType, setProfileType] = useState('student');
     const {title = "No title", level = "h2", component = "h1", mb = 2} = props;
     const {statusVisibility} = useSystemSetting();
+    const { user: { role } } = useAuthContext();
 
     return (
         <Stack direction="row" mb={mb} alignItems="center">
@@ -24,7 +25,7 @@ export const PageTitle = (props) => {
                                 marginLeft: 1
                             }}
                         >
-                            {profileType}
+                            {role}
                         </Chip>
                     </Box>
                 )

@@ -19,7 +19,6 @@ import Button from "@mui/joy/Button";
 import GoogleIcon from "../../assets/svg/GoogleIcon";
 import {useLogin} from "../../hooks/useLogin";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import {ButtonLoader} from "../../components/LoaderButton/ButtonLoader";
 
 function Login() {
     const [showAlert, setShowAlert] = useState(false);
@@ -159,22 +158,17 @@ function Login() {
                         />
                         <Typography level="body-sm" component={RouterLink} to="/forgot-password">Forgot password?</Typography>
                     </Sheet>
-                    {/*{!isLoading ? (<Button startDecorator={<LoginOutlined/>} variant="solid" color="primary" size="sm"*/}
-                    {/*        type="submit" fullWidth>Sign in</Button>*/}
-                    {/*) : (*/}
-                    {/*<Button variant="solid" color="primary" size="sm"*/}
-                    {/*        type="submit" fullWidth>*/}
-                    {/*    <CircularProgress*/}
-                    {/*        color="neutral"*/}
-                    {/*        determinate={false}*/}
-                    {/*        size="sm"*/}
-                    {/*        value={25}*/}
-                    {/*        variant="plain"*/}
-                    {/*    />*/}
-                    {/*</Button>*/}
-                    {/*)}*/}
-
-                    <ButtonLoader text="Sign in" type="submit" isLoading={isLoading}/>
+                    <Button
+                        startDecorator={<LoginOutlined />}
+                        variant="solid"
+                        color="primary"
+                        size="sm"
+                        fullWidth
+                        loading={isLoading}
+                        type="submit"
+                    >
+                        Sign in
+                    </Button>
                 </Box>
             </Sheet>
             <Sheet class="footer" sx={{

@@ -24,15 +24,13 @@ export const useLogout = () => {
             .then(() => {
                 dispatch({type: 'LOGOUT'});
             })
-            .then(() => {
-                navigate("/login");
-            })
             .catch(e => {
                 setError(e?.response?.data?.response || "An error occurred during logout.");
             })
             .finally(() => {
                 localStorage.removeItem('user');
                 setIsLoading(false);
+                navigate("/login");
             });
     };
 

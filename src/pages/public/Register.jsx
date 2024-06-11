@@ -165,7 +165,7 @@ function Register() {
                         />
                     </Sheet>
                     <Button startDecorator={<LoginOutlined/>} variant="solid" color="primary" size="sm"
-                            type="submit" fullWidth>Sign up</Button>
+                            type="submit" loading={isLoading} fullWidth>Sign up</Button>
                 </Box>
             </Sheet>
             <Sheet class="footer" sx={{
