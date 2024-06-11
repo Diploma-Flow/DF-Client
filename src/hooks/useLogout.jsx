@@ -9,35 +9,32 @@ export const useLogout = () => {
     const { user, dispatch } = useAuthContext();
     const {access_token} = user;
     const navigate = useNavigate();
-    
-    const logout = async () => {
-        try{
-            setError(null);
-            setIsLoading(true);
-            //FIXME logout not working
-            await axios.post('http://localhost:8080/auth/logout', null, {
-                headers: {
-                    Authorization: `Bearer ${access_token}`,
-                    'Content-Type': 'application/json'
-                }
-            });
+    const baseURL = 'http://localhost:8080';
 
-            setIsLoading(false);
-        
-            //remove user from storage
-            //This will remove all user related info from the local storage of the browser
-            localStorage.removeItem('user');
-            
-            //dispatch logout action
-            //This will clear the authContext and set it to null
-            dispatch({type: 'LOGOUT'});
-            navigate("/login")
-        } catch (e) {
-            // console.error(e);
-            setError(e.message);
-            setIsLoading(false);
-        }
-    }
+    const logout = () => {
+        setIsLoading(true);
+        setError(null);
+
+        axios.post(`${baseURL}/auth/logout`, null, {
+            headers: {
+                Authorization: `Bearer ${access_token}`,
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(() => {
+                dispatch({type: 'LOGOUT'});
+            })
+            .then(() => {
+                navigate("/login");
+            })
+            .catch(e => {
+                setError(e?.response?.data?.response || "An error occurred during logout.");
+            })
+            .finally(() => {
+                localStorage.removeItem('user');
+                setIsLoading(false);
+            });
+    };
 
     return {logout, error, isLoading};
 }

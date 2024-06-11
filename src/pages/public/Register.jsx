@@ -9,27 +9,36 @@ import GoogleIcon from "../../assets/svg/GoogleIcon";
 import Divider from "@mui/joy/Divider";
 import Input from "@mui/joy/Input";
 import * as React from "react";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import PasswordMeterInput from "../../components/PasswordMeterInput/PasswordMeterInput";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import Stack from "@mui/joy/Stack";
+import {useRegister} from "../../hooks/useRegister";
 
 function Register() {
     const [showAlert, setShowAlert] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const {register, error, isLoading} = useRegister();
 
     const handleFormSubmit = (event) => {
         event.preventDefault();
         const formElements = event.currentTarget.elements;
-        const data = {
+        const registerRequest = {
             email: formElements.email.value,
             password: formElements.password.value,
-            first_name: formElements.first_name.value,
-            last_name: formElements.last_name.value,
-            persistent: formElements.persistent.checked,
+            firstName: formElements.first_name.value,
+            lastName: formElements.last_name.value,
         };
-        alert(JSON.stringify(data, null, 2));
+
+        register(registerRequest);
     };
+
+    useEffect(() => {
+        if (error) {
+            setErrorMessage(error);
+            setShowAlert(true);
+        }
+    }, [error]);
 
     return (<Sheet
         component="main"
@@ -111,22 +120,22 @@ function Register() {
                             mb: 1.5,
                             flexWrap: 'wrap'}}
                     >
-                        <FormControl sx={{ flex: 1, minWidth: '100px', width: '100%'}} size="md">
+                        <FormControl sx={{ flex: 1, minWidth: '150px', width: '100%'}} size="md">
                             <FormLabel>First name</FormLabel>
                             <Input type="text" name="first_name" placeholder="John"
-                                   autocomplete="given-name" required/>
+                                   autoComplete="given-name" required/>
                         </FormControl>
-                        <FormControl sx={{ flex: 1, minWidth: '100px', width: '100%'}} size="md">
+                        <FormControl sx={{ flex: 1, minWidth: '150px', width: '100%'}} size="md">
                             <FormLabel>Last name</FormLabel>
                             <Input type="text" name="last_name" placeholder="Deer"
-                                   autocomplete="family-name" required/>
+                                   autoComplete="family-name" required/>
                         </FormControl>
                     </Box>
 
                     <FormControl sx={{width: '100%', mb: 1.5}}>
                         <FormLabel>Email</FormLabel>
                         <Input startDecorator={<EmailRounded/>} type="email" name="email" placeholder="john@edu.com"
-                               autocomplete="username" required/>
+                               autoComplete="username" required/>
                         {/*<FormHelperText>Please provide a valid email</FormHelperText>*/}
                     </FormControl>
                     <FormControl sx={{width: '100%'}}>

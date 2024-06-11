@@ -44,11 +44,6 @@ export default function Sidebar() {
         setSelected(title);
     }
 
-    const handleLogout = async (event) => {
-        event.preventDefault();
-        await logout();
-    };
-
     return (
         <Sheet
             className="Sidebar"
@@ -259,7 +254,7 @@ export default function Sidebar() {
                         <Typography level="body-xs">siriwatk@test.com</Typography>
                     </Box>
                 </Box>
-                <IconButton size="sm" variant="plain" color="neutral" onClick={handleLogout}>
+                <IconButton size="sm" variant="plain" color="neutral" onClick={logout}>
                     <LogoutRoundedIcon/>
                 </IconButton>
             </Box>

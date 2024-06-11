@@ -1,4 +1,4 @@
-import {Box, Checkbox, FormControl, FormLabel, Sheet} from "@mui/joy";
+import {Alert, Box, Checkbox, CircularProgress, FormControl, FormLabel, Sheet} from "@mui/joy";
 import IconButton from "@mui/joy/IconButton";
 import {
     EmailRounded,
@@ -6,11 +6,11 @@ import {
     LoginOutlined,
     SchoolRounded,
     VisibilityOffRounded,
-    VisibilityRounded
+    VisibilityRounded, WarningRounded
 } from "@mui/icons-material";
 import Typography from "@mui/joy/Typography";
 import * as React from "react";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import ColorSchemeToggle from "../../components/ToggleThemeMode/ColorSchemeToggle";
 import Divider from "@mui/joy/Divider";
 import Input from "@mui/joy/Input";
@@ -18,32 +18,37 @@ import {Link as RouterLink} from "react-router-dom";
 import Button from "@mui/joy/Button";
 import GoogleIcon from "../../assets/svg/GoogleIcon";
 import {useLogin} from "../../hooks/useLogin";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import {ButtonLoader} from "../../components/LoaderButton/ButtonLoader";
 
 function Login() {
-
+    const [showAlert, setShowAlert] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const {login, error, isLoading} = useLogin();
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     }
 
-    const [loginRequest, setLoginRequest] = useState({
-        email: '',
-        password: ''
-    });
-
-    const {login, error, isLoading} = useLogin();
-
-    const handleFormSubmit = async (event) => {
+    const handleFormSubmit = (event) => {
         event.preventDefault();
 
-        console.log(loginRequest);
-        await login(loginRequest);
+        const formElements = event.currentTarget.elements;
+        const loginRequest = {
+            email: formElements.email.value,
+            password: formElements.password.value,
+        };
+
+        login(loginRequest);
     };
 
-    const handleChange = (event) => {
-        setLoginRequest({ ...loginRequest, [event.target.name]: event.target.value });
-    };
+    useEffect(() => {
+        if (error) {
+            setErrorMessage(error);
+            setShowAlert(true);
+        }
+    }, [error]);
 
     return (<Sheet
         component="main"
@@ -84,6 +89,18 @@ function Login() {
                 },
                 transition: 'width 0.4s'
             }}>
+                {showAlert && (<Alert
+                    startDecorator={<WarningRounded/>}
+                    variant="plain"
+                    color="danger"
+                    endDecorator={<React.Fragment>
+                        <IconButton variant="plain" size="sm" color="danger" onClick={() => setShowAlert(false)}>
+                            <CloseRoundedIcon/>
+                        </IconButton>
+                    </React.Fragment>}
+                >
+                    {errorMessage}
+                </Alert>)}
                 <Typography level="h3" marginY={1}>Sign in</Typography>
                 <Box sx={{
                     display: 'flex',
@@ -109,7 +126,6 @@ function Login() {
                                name="email"
                                placeholder="john@edu.com"
                                autoComplete="username"
-                               onChange={handleChange}
                                required/>
                         {/*<FormHelperText>Please provide a valid email</FormHelperText>*/}
                     </FormControl>
@@ -123,7 +139,6 @@ function Login() {
                                name="password"
                                placeholder="Example@1234"
                                autoComplete="current-password"
-                               onChange={handleChange}
                                required/>
                     </FormControl>
                     <Sheet sx={{
@@ -144,8 +159,22 @@ function Login() {
                         />
                         <Typography level="body-sm" component={RouterLink} to="/forgot-password">Forgot password?</Typography>
                     </Sheet>
-                    <Button startDecorator={<LoginOutlined/>} variant="solid" color="primary" size="sm"
-                            type="submit" fullWidth>Sign in</Button>
+                    {/*{!isLoading ? (<Button startDecorator={<LoginOutlined/>} variant="solid" color="primary" size="sm"*/}
+                    {/*        type="submit" fullWidth>Sign in</Button>*/}
+                    {/*) : (*/}
+                    {/*<Button variant="solid" color="primary" size="sm"*/}
+                    {/*        type="submit" fullWidth>*/}
+                    {/*    <CircularProgress*/}
+                    {/*        color="neutral"*/}
+                    {/*        determinate={false}*/}
+                    {/*        size="sm"*/}
+                    {/*        value={25}*/}
+                    {/*        variant="plain"*/}
+                    {/*    />*/}
+                    {/*</Button>*/}
+                    {/*)}*/}
+
+                    <ButtonLoader text="Sign in" type="submit" isLoading={isLoading}/>
                 </Box>
             </Sheet>
             <Sheet class="footer" sx={{

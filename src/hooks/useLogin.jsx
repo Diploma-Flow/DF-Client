@@ -9,29 +9,27 @@ export const useLogin = () => {
     const [isLoading, setIsLoading] = useState(null);
     const { dispatch } = useAuthContext();
     const navigate = useNavigate();
+    const baseURL = 'http://localhost:8080';
 
-    const login = async (loginRequest) => {
+    const login = (loginRequest) => {
         setIsLoading(true);
         setError(null);
 
-        try{
-            const response = await axios.post('http://localhost:8080/auth/login', loginRequest);
-
-            if (response.status !== 200) {
-                setError(response.data);
+        axios.post(`${baseURL}/auth/login`, loginRequest)
+            .then(response => {
+                let customPayload = generatePayload(response);
+                localStorage.setItem("user", JSON.stringify(customPayload));
+                dispatch({ type: "LOGIN", payload: customPayload });
+            })
+            .then(() => {
+                navigate("/");
+            })
+            .catch(e => {
+                setError(e?.response?.data?.response || "An error occurred during login.");
+            })
+            .finally(() => {
                 setIsLoading(false);
-                return;
-            }
-
-            let customPayload = generatePayload(response);
-            localStorage.setItem("user", JSON.stringify(customPayload));
-            dispatch({ type: "LOGIN", payload: customPayload });
-            setIsLoading(false);
-            navigate("/");
-        } catch (error) {
-            setError(error.message);
-            setIsLoading(false);
-        }
+            });
     };
 
     return {login, error, isLoading};
