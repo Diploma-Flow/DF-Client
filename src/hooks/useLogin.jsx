@@ -21,8 +21,6 @@ export const useLogin = () => {
                 let principal = generatePrincipalPayload(response);
                 localStoragePrincipalService.setPrincipal(principal);
                 dispatch({ type: "SET_PRINCIPAL", payload: principal });
-            })
-            .then(() => {
                 navigate("/");
             })
             .catch(e => {
