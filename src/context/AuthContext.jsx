@@ -6,12 +6,12 @@ export const AuthContext = createContext(null);
 // ! THE 'state' is the previous state
 export const authReducer = (state, action) => {
     switch (action.type){
-        case 'LOGIN':
+        case 'SET_PRINCIPAL':
             return {user: action.payload};
-        case 'LOGOUT':
+        case 'REMOVE_PRINCIPAL':
             return {user: null};
         default:
-            return state;
+            throw new Error(`Unknown action type ${action.type}`);
     }
 }
 

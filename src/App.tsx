@@ -19,7 +19,7 @@ import {DiplomaCreate} from "./pages/private/student/diploma/create/DiplomaCreat
 import {DiplomaDetails} from "./pages/private/student/diploma/details/DiplomaDetails";
 import {Messages} from "./pages/private/shared/Messages";
 import {PageContainer} from "./components/LayoutContainer/PageContainer";
-import {useMessagePageStatus} from "./services/IsMessagePageOpen";
+import {useMessagePageStatus} from "./services/isMessagePageOpen";
 import {useAuthContext} from "./hooks/useAuthContext";
 
 function App() {
