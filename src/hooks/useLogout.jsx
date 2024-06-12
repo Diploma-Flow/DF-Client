@@ -1,7 +1,6 @@
 import { useAuthContext } from "./useAuthContext"
 import axios from "axios";
 import { useState } from "react";
-import {useNavigate} from "react-router-dom";
 import localStoragePrincipalService from "../services/localStoragePrincipalService";
 
 export const useLogout = () => {
@@ -9,7 +8,6 @@ export const useLogout = () => {
     const [isLoading, setIsLoading] = useState(null);
     const { user, dispatch } = useAuthContext();
     const {access_token} = user;
-    const navigate = useNavigate();
     const baseURL = 'http://localhost:8080';
 
     const logout = () => {

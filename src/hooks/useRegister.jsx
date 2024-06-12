@@ -1,8 +1,5 @@
 import {useState} from "react";
-import {useAuthContext} from "./useAuthContext";
-import {useNavigate} from "react-router-dom";
 import axios from "axios";
-import {generatePrincipalPayload} from "../services/generatePrincipalPayload";
 import {useLogin} from "./useLogin";
 
 /**
@@ -40,7 +37,6 @@ export const useRegister = () => {
                 return login(loginRequest);
             })
             .catch(e => {
-                console.log(e);
                 setError(e?.response?.data?.response || "An error occurred during registration.");
             })
             .finally(() => {

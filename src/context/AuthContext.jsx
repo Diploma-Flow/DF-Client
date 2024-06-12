@@ -1,5 +1,5 @@
 import { createContext, useReducer, useEffect } from "react";
-import {localStoragePrincipalService} from "../services/localStoragePrincipalService";
+import localStoragePrincipalService from "../services/localStoragePrincipalService";
 
 // creates context that will be passed along the components
 export const AuthContext = createContext(null);
