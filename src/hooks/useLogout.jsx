@@ -6,8 +6,8 @@ import localStoragePrincipalService from "../services/localStoragePrincipalServi
 export const useLogout = () => {
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(null);
-    const { user, dispatch } = useAuthContext();
-    const {access_token} = user;
+    const { principle, dispatch } = useAuthContext();
+    const {access_token} = principle;
     const baseURL = 'http://localhost:8080';
 
     const logout = () => {

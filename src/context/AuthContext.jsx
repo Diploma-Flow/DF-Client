@@ -8,18 +8,18 @@ export const AuthContext = createContext(null);
 export const authReducer = (state, action) => {
     switch (action.type){
         case 'SET_PRINCIPAL':
-            return {user: action.payload};
+            return {principle: action.payload};
         case 'REMOVE_PRINCIPAL':
-            return {user: null};
+            return {principle: null};
         default:
             throw new Error(`Unknown action type ${action.type}`);
     }
 }
 
 export const AuthContextProvider = ({children}) => {
-    const initialState = {user: localStoragePrincipalService.getPrincipal()};
+    const initialState = {principle: localStoragePrincipalService.getPrincipal()};
     const [state, dispatch] = useReducer(authReducer, initialState)
-    const isAuthenticated = !!state.user;
+    const isAuthenticated = !!state.principle;
 
     useEffect(() =>{
         checkIfUserIsLoggedIn();
@@ -33,7 +33,7 @@ export const AuthContextProvider = ({children}) => {
 
         }catch(e){
             console.error(e + "Unexpected error occured!");
-            localStorage.removeItem('user');
+            localStoragePrincipalService.deletePrincipal();
         }
     }
 

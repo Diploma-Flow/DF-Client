@@ -9,7 +9,7 @@ import {useAuthContext} from "../../hooks/useAuthContext";
 export const PageTitle = (props) => {
     const {title = "No title", level = "h2", component = "h1", mb = 2} = props;
     const {statusVisibility} = useSystemSetting();
-    const { user: { role } } = useAuthContext();
+    const { principle: { role } } = useAuthContext();
 
     return (
         <Stack direction="row" mb={mb} alignItems="center">
