@@ -7,7 +7,7 @@ import {CssBaseline, CssVarsProvider} from "@mui/joy";
 import {SystemSettingProvider} from "./context/SystemSettingContext";
 import {AuthContextProvider} from "./context/AuthContext";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(<React.StrictMode>
     <SystemSettingProvider>
         <CssVarsProvider defaultMode="system">
