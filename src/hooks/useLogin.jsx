@@ -1,8 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
 import { useAuthContext } from "./useAuthContext";
-import { generatePayload } from "../services/generatePayload";
+import { generatePrincipalPayload } from "../services/generatePrincipalPayload";
 import {useNavigate} from "react-router-dom";
+import localStoragePrincipalService from "../services/localStoragePrincipalService";
 
 export const useLogin = () => {
     const [error, setError] = useState(null);
@@ -17,9 +18,9 @@ export const useLogin = () => {
 
         axios.post(`${baseURL}/auth/login`, loginRequest)
             .then(response => {
-                let customPayload = generatePayload(response);
-                localStorage.setItem("user", JSON.stringify(customPayload));
-                dispatch({ type: "LOGIN", payload: customPayload });
+                let principal = generatePrincipalPayload(response);
+                localStoragePrincipalService.setPrincipal(principal);
+                dispatch({ type: "SET_PRINCIPAL", payload: principal });
             })
             .then(() => {
                 navigate("/");

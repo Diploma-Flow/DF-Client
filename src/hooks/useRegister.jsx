@@ -2,7 +2,7 @@ import {useState} from "react";
 import {useAuthContext} from "./useAuthContext";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
-import {generatePayload} from "../services/generatePayload";
+import {generatePrincipalPayload} from "../services/generatePrincipalPayload";
 import {useLogin} from "./useLogin";
 
 /**

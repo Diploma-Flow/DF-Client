@@ -1,4 +1,5 @@
 import { createContext, useReducer, useEffect } from "react";
+import {localStoragePrincipalService} from "../services/localStoragePrincipalService";
 
 // creates context that will be passed along the components
 export const AuthContext = createContext(null);
@@ -16,7 +17,7 @@ export const authReducer = (state, action) => {
 }
 
 export const AuthContextProvider = ({children}) => {
-    const initialState = {user: JSON.parse(localStorage.getItem('user'))};
+    const initialState = {user: localStoragePrincipalService.getPrincipal()};
     const [state, dispatch] = useReducer(authReducer, initialState)
     const isAuthenticated = !!state.user;
 
@@ -25,9 +26,9 @@ export const AuthContextProvider = ({children}) => {
     }, [])
     const checkIfUserIsLoggedIn = () => {
         try{
-            let user = JSON.parse(localStorage.getItem('user'));
-            if(user && user.access_token && user.refresh_token){
-                dispatch({type: 'LOGIN', payload: user});
+            let principle = localStoragePrincipalService.getPrincipal();
+            if(principle && principle.access_token && principle.refresh_token){
+                dispatch({type: 'SET_PRINCIPAL', payload: principle});
             }
 
         }catch(e){

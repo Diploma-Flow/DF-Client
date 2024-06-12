@@ -2,6 +2,7 @@ import { useAuthContext } from "./useAuthContext"
 import axios from "axios";
 import { useState } from "react";
 import {useNavigate} from "react-router-dom";
+import localStoragePrincipalService from "../services/localStoragePrincipalService";
 
 export const useLogout = () => {
     const [error, setError] = useState(null);
@@ -22,15 +23,15 @@ export const useLogout = () => {
             }
         })
             .then(() => {
-                dispatch({type: 'LOGOUT'});
+                dispatch({type: 'REMOVE_PRINCIPAL'});
             })
             .catch(e => {
                 setError(e?.response?.data?.response || "An error occurred during logout.");
             })
             .finally(() => {
-                localStorage.removeItem('user');
+                localStoragePrincipalService.deletePrincipal();
                 setIsLoading(false);
-                navigate("/login");
+                window.location.assign("/login");
             });
     };
 

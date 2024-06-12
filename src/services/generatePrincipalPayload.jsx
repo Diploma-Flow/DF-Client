@@ -1,6 +1,6 @@
 import {jwtDecode} from "jwt-decode";
 
-export const generatePayload = (response) => {
+export const generatePrincipalPayload = (response) => {
     const { data } = response;
 
     const userRole = jwtDecode(data.data.access_token)?.role;
