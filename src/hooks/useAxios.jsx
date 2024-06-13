@@ -3,7 +3,6 @@ import {useAuthContext} from "./useAuthContext";
 import {useRefreshTokens} from "./useRefreshTokens";
 import {useLogout} from './useLogout';
 const useAxios = () => {
-    const baseURL = 'http://localhost:8080';
     const {principle} = useAuthContext();
     const {access_token, refresh_token} = principle;
     const {refreshTokens} = useRefreshTokens();
@@ -11,52 +10,41 @@ const useAxios = () => {
 
 
     const axiosInstance = axios.create({
-        baseURL,
+        baseURL: 'http://localhost:8080',
         headers: {
             Authorization: `Bearer ${access_token}`,
             'Content-Type': 'application/json'
         }
     });
 
-    axiosInstance.interceptors.request.use(async req => {
-        return req;
-    });
+    axiosInstance.interceptors.request.use(req => req);
 
     //response interceptor to handle 401 error and refresh token if needed
     axiosInstance.interceptors.response.use(
-        (response) => {
-            return response;
-        },
-        async (error) => {
+        response => response, // Directly return the response if successful
+        async error => {
             const originalRequest = error.config;
-            if (error.response.status !== 401 || originalRequest._retry || error.response.data.response !== 'TOKEN EXPIRED') {
-                return Promise.reject(error);
+
+            // Check if the error status is 401 and the token has expired
+            if (error.response?.status === 401 && error.response.data.response === 'TOKEN EXPIRED' && !originalRequest._retry) {
+                originalRequest._retry = true;
+
+                try {
+                    // Refresh tokens and update the request header
+                    const newTokens = await refreshTokens(refresh_token);
+                    originalRequest.headers['Authorization'] = `Bearer ${newTokens.access_token}`;
+                    return axiosInstance(originalRequest); // Retry the original request with new token
+                } catch (refreshError) {
+                    logout(); // Logout if token refresh fails
+                    return Promise.reject(refreshError);
+                }
             }
 
-            originalRequest._retry = true;
-
-            try {
-                const newTokens = await refreshTokens(refresh_token);
-                originalRequest.headers['Authorization'] = `Bearer ${newTokens.access_token}`;
-
-                console.log("2. New RefreshToken", newTokens);
-            } catch (e) {
-                //REFRESH TOKEN IS EXPIRED OR INVALID
-                logout();
-                return Promise.reject(e.response.data.response);
-            }
-
-            try {
-                const nextResponse = await axiosInstance(originalRequest);
-                return nextResponse;
-            } catch (e) {
-                //USER IS NOT AUTHORIZTED FOR THIS ACTION
-                return Promise.reject(e.response.data.response);
-            }
+            return Promise.reject(error); // Reject other errors as usual
         }
     );
 
-    return axiosInstance;
+    return axiosInstance; // Return the customized Axios instance
 }
 
 export default useAxios;
