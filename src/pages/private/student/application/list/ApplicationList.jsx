@@ -1,4 +1,3 @@
-import Typography from "@mui/joy/Typography";
 import {Box, Table} from "@mui/joy";
 import {Add} from "@mui/icons-material";
 import Button from "@mui/joy/Button";
@@ -31,8 +30,8 @@ export const ApplicationList = () => {
     }
 
     const applications = [
-        createData('AP-0001', 'Thesis of biology', 'Created', 'Simeon Konstantinov Popov', 'simeon@example.com', 'Mihaela Kirilova', 'mihaela@example.com', 'Feb 3, 2023'),
-        createData('AP-0002', 'Project Presentation', 'Send', 'John Doe', 'john@example.com', 'Jane Smith', 'jane@example.com', 'Feb 3, 2023'),
+        createData('AP-00001', 'Thesis of biology', 'Created', 'Simeon Konstantinov Popov', 'simeon@example.com', 'Mihaela Kirilova', 'mihaela@example.com', 'Feb 3, 2023'),
+        createData('AP-00002', 'Project Presentation', 'Send', 'John Doe', 'john@example.com', 'Jane Smith', 'jane@example.com', 'Feb 3, 2023'),
         createData('AP-00011', 'Meeting with Client', 'Cancelled', 'Peter Jones', 'peter@example.com', 'Mary Brown', 'mary@example.com', 'Feb 5, 2023'),
         createData('AP-00012', 'Design Review', 'Rejected', 'Susan Wilson', 'susan@example.com', 'David Miller', 'david@example.com', 'Feb 8, 2023'),
         createData('AP-00013', 'Wireframe Approval', 'Cancelled', 'Michael Taylor', 'michael@example.com', 'Emily Johnson', 'emily@example.com', 'Feb 10, 2023'),

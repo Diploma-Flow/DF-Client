@@ -1,6 +1,6 @@
 // SystemSettingContext.js
 import React, {createContext, useContext, useEffect, useState} from 'react';
-import {getFromLocalStorage, LOCAL_STORAGE_KEYS, saveToLocalStorage} from "../services/localStorage";
+import {getFromLocalStorage, LOCAL_STORAGE_KEYS, saveToLocalStorage} from "../services/localStorage.tsx";
 
 const SystemSettingContext = createContext(null);
 
