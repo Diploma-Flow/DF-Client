@@ -2,15 +2,19 @@ import {Box, Table} from "@mui/joy";
 import {Add} from "@mui/icons-material";
 import Button from "@mui/joy/Button";
 import * as React from "react";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Sheet from "@mui/joy/Sheet";
 import {ApplicationRow} from "../../../../../components/Application/TableRow/ApplicationRow";
 import {ApplicationFilters} from "../../../../../components/Application/Filters/ApplicationFilters";
 import {DownloadPdfButton} from "../../../../../components/DownloadButton/DawnloadPdfButton";
 import {Link as RouterLink} from "react-router-dom";
 import {PageTitle} from "../../../../../components/PageTitle/PageTitle";
+import useAxios from "../../../../../hooks/useAxios";
 
 export const ApplicationList = () => {
+    const api = useAxios();
+    const [applications, setApplications] = useState([]);
+    const [isLastPage, setIsLastPage] = useState(false);
     const [filters, setFilters] = useState({
         search: '',
         status: '',
@@ -22,44 +26,63 @@ export const ApplicationList = () => {
         setFilters((prevFilters) => ({ ...prevFilters, [filterName]: value }));
     };
 
-    function createData(id, title, status, ownerName, ownerEmail, supervisorName, supervisorEmail, dateOfCreation) {
+    function createApplicationObject(id, title, status, ownerName, ownerEmail, supervisorName, supervisorEmail, dateOfCreation) {
         const owner = { name: ownerName, email: ownerEmail };
         const supervisor = { name: supervisorName, email: supervisorEmail };
 
         return { id, title, status, owner, supervisor, dateOfCreation };
     }
 
-    const applications = [
-        createData('AP-00001', 'Thesis of biology', 'Created', 'Simeon Konstantinov Popov', 'simeon@example.com', 'Mihaela Kirilova', 'mihaela@example.com', 'Feb 3, 2023'),
-        createData('AP-00002', 'Project Presentation', 'Send', 'John Doe', 'john@example.com', 'Jane Smith', 'jane@example.com', 'Feb 3, 2023'),
-        createData('AP-00011', 'Meeting with Client', 'Cancelled', 'Peter Jones', 'peter@example.com', 'Mary Brown', 'mary@example.com', 'Feb 5, 2023'),
-        createData('AP-00012', 'Design Review', 'Rejected', 'Susan Wilson', 'susan@example.com', 'David Miller', 'david@example.com', 'Feb 8, 2023'),
-        createData('AP-00013', 'Wireframe Approval', 'Cancelled', 'Michael Taylor', 'michael@example.com', 'Emily Johnson', 'emily@example.com', 'Feb 10, 2023'),
-        createData('AP-00014', 'Development Start', 'Rejected', 'Sarah Williams', 'sarah@example.com', 'James Davis', 'james@example.com', 'Feb 12, 2023'),
-        createData('AP-00015', 'Development Progress', 'Accepted', 'David Thompson', 'david@example.com', 'Lisa Miller', 'lisa@example.com', 'Feb 15, 2023'),
-        createData('AP-00016', 'Development Completion', 'Cancelled', 'Janet Brown', 'janet@example.com', 'John Smith', 'john@example.com', 'Feb 17, 2023'),
-        createData('AP-00017', 'Testing Start', 'Accepted', 'Peter Jones', 'peter@example.com', 'Mary Brown', 'mary@example.com', 'Feb 20, 2023'),
-        createData('AP-00018', 'Testing Progress', 'Rejected', 'Susan Wilson', 'susan@example.com', 'David Miller', 'david@example.com', 'Feb 22, 2023'),
-        createData('AP-00019', 'Testing Completion', 'Send', 'Michael Taylor', 'michael@example.com', 'Emily Johnson', 'emily@example.com', 'Feb 24, 2023'),
-        createData('AP-00020', 'Deployment Plan', 'Rejected', 'Sarah Williams', 'sarah@example.com', 'James Davis', 'james@example.com', 'Feb 27, 2023'),
-        createData('AP-00021', 'Deployment Testing', 'Accepted', 'David Thompson', 'david@example.com', 'Lisa Miller', 'lisa@example.com', 'Mar 1, 2023'),
-        createData('AP-00022', 'Deployment Approval', 'Cancelled', 'Janet Brown', 'janet@example.com', 'John Smith', 'john@example.com', 'Mar 3, 2023'),
-        createData('AP-00023', 'Deployment Staging', 'Send', 'Peter Jones', 'peter@example.com', 'Mary Brown', 'mary@example.com', 'Mar 5, 2023'),
-        createData('AP-00024', 'Deployment Staging Testing', 'Cancelled', 'Susan Wilson', 'susan@example.com', 'David Miller', 'david@example.com', 'Mar 7, 2023'),
-        createData('AP-00025', 'Deployment Go-Live', 'Accepted', 'Michael Taylor', 'michael@example.com', 'Emily Johnson', 'emily@example.com', 'Mar 9, 2023'),
-        createData('AP-00026', 'Post-Deployment Testing', 'Rejected', 'Sarah Williams', 'sarah@example.com', 'James Davis', 'james@example.com', 'Mar 11, 2023'),
-        createData('AP-00027', 'Deployment Review', 'Accepted', 'David Thompson', 'david@example.com', 'Lisa Miller', 'lisa@example.com', 'Mar 13, 2023'),
-        createData('AP-00028', 'Client Satisfaction Survey', 'Rejected', 'Janet Brown', 'janet@example.com', 'John Smith', 'john@example.com', 'Mar 15, 2023'),
-        createData('AP-00029', 'Customer Feedback Analysis', 'Cancelled', 'Peter Jones', 'peter@example.com', 'Mary Brown', 'mary@example.com', 'Mar 17, 2023'),
-        createData('AP-00030', 'Action Plan for Improvements', 'Created', 'Susan Wilson', 'susan@example.com', 'David Miller', 'david@example.com', 'Mar 19, 2023'),
-        createData('AP-00031', 'Implementation of Improvement Plan', 'Accepted', 'Michael Taylor', 'michael@example.com', 'Emily Johnson', 'emily@example.com', 'Mar 21, 2023'),
-        createData('AP-00032', 'Post-Implementation Review', 'Rejected', 'Sarah Williams', 'sarah@example.com', 'James Davis', 'james@example.com', 'Mar 23, 2023'),
-        createData('AP-00033', 'Project Wrap-Up', 'Cancelled', 'David Thompson', 'david@example.com', 'Lisa Miller', 'lisa@example.com', 'Mar 25, 2023'),
-        createData('AP-00034', 'Project Presentation to Client', 'Rejected', 'Janet Brown', 'janet@example.com', 'John Smith', 'john@example.com', 'Mar 27, 2023'),
-        createData('AP-00035', 'Post-Project Feedback', 'Rejected', 'Peter Jones', 'peter@example.com', 'Mary Brown', 'mary@example.com', 'Mar 29, 2023'),
-        createData('AP-00036', 'Project Closure', 'Cancelled', 'Susan Wilson', 'susan@example.com', 'David Miller', 'david@example.com', 'Apr 1, 2023'),
-        createData('AP-00037', 'Project Evaluation', 'Accepted', 'Michael Taylor', 'michael@example.com', 'Emily Johnson', 'emily@example.com', 'Apr 3, 2023'),
-    ];
+    const fetchApplications = () => {
+        let params = {
+            page: 0,
+            size: 4
+        }
+
+        api.get("/diploma-management", { params })
+            .then(response => {
+                processResponse(response.data);
+            })
+            .catch(error => {
+                console.error("Error fetching data:", error);
+            });
+    };
+
+    const processResponse = (data) => {
+        const { content, last } = data;
+        const formattedContent = content.map(item =>
+            createApplicationObject(
+                item.id,
+                item.title,
+                item.status,
+                `${item.owner.firstName} ${item.owner.lastName}`,
+                item.owner.email,
+                `${item.supervisor.firstName} ${item.supervisor.lastName}`,
+                item.supervisor.email,
+                formatDate(item.creationDate)
+            )
+        );
+
+        setApplications(formattedContent);
+        setIsLastPage(last);
+    };
+
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+
+        const month = date.toLocaleString('default', { month: 'long' }).slice(0, 3);
+        const day = date.getDate();
+        const year = date.getFullYear();
+
+        return `${month} ${day}, ${year}`;
+    };
+
+    useEffect(() => {
+        fetchApplications();
+        const interval = setInterval(fetchApplications, 20000); // 20 seconds
+
+        return () => clearInterval(interval); // Cleanup interval on unmount
+    }, []);
 
     const filteredApplications = applications.filter((application) => {
         const { search, status, owner, supervisor } = filters;

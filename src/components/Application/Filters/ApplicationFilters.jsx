@@ -51,11 +51,11 @@ export const ApplicationFilters = (props) => {
                 <Input size="sm" placeholder="Search" onChange={handleSearchInputChange} startDecorator={<SearchRounded />} />
             </FormControl>
             <SelectFilter title="Status" onChange={handleStatusChange}>
-                <Option value="created">Created</Option>
-                <Option value="send">Send</Option>
+                <Option value="opened">Opened</Option>
+                <Option value="sent">Sent</Option>
                 <Option value="cancelled">Cancelled</Option>
                 <Option value="rejected">Rejected</Option>
-                <Option value="accepted">Accepted</Option>
+                <Option value="approved">Approved</Option>
             </SelectFilter>
             <PersonFilter size="sm" title="Owner" persons={uniqueOwners} onInputChange={handleOwnerFilterChange}/>
             <PersonFilter size="sm" title="Supervisor" persons={uniqueSupervisors} onInputChange={handleSupervisorFilterChange}/>

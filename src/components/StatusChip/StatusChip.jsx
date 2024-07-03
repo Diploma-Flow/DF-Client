@@ -5,19 +5,19 @@ import PropTypes from "prop-types";
 
 const StatusChip = ({ variant = 'soft', size='sm', status, sx }) => {
     const decorators = {
-        Created: <CreateRounded/>,
-        Send: <SendRounded/>,
+        Opened: <CreateRounded/>,
+        Sent: <SendRounded/>,
         Cancelled: <CancelRounded/>,
         Rejected: <BlockRounded/>,
-        Accepted: <CheckRounded/>,
+        Approved: <CheckRounded/>,
     };
 
     const colors = {
-        Created: 'neutral',
-        Send: 'primary',
+        Opened: 'neutral',
+        Sent: 'primary',
         Cancelled: 'warning',
         Rejected: 'danger',
-        Accepted: 'success',
+        Approved: 'success',
     };
 
     const capitalizeFirstLetter = (word) => {
